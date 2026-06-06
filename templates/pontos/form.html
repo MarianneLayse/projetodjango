@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    <h2>{{ titulo }}</h2>
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            {{ form.media }}
+
+            <div class="p-4"></div>
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+$("#id_estado").change(function(){
+    estado_id = $('#id_estado').val();
+    if (estado_id){
+        $.ajax({
+            url: '/municipios/por_estado/'+estado_id,
+            success: function(data){
+                $('#id_municipio').empty().append("<option value=''>Selecione um município</option>"); 
+                $('#id_bairro').empty().append("<option value=''>Selecione um bairro</option>");
+                $.each(data,function(i,municipio){
+                    $('#id_municipio').append("<option value="+municipio.id+">"+municipio.nome+"</option>");
+                })
+            }
+        })
+    } else {
+        $('#id_municipio').empty().append("<option value=''>Selecione um município</option>");
+    }
+});
+
+$("#id_municipio").change(function(){
+    municipio_id = $('#id_municipio').val();
+    if (municipio_id){
+        $.ajax({
+            url: '/bairros/por_municipio/'+municipio_id,
+            success: function(data){
+                $('#id_bairro').empty().append("<option value=''>Selecione um bairro</option>");
+                $.each(data,function(i,bairro){
+                    $('#id_bairro').append("<option value="+bairro.id+">"+bairro.nome+"</option>");
+                })
+            }
+        })
+    }
+});
+
+
+</script>
+<a href="{% url 'listar_pontos' %}">Voltar</a>
+{% endblock %}

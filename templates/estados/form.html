@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    {% if estado %}
+        Editar Estado
+    {% else %}
+        Cadastrar novo Estado
+    {% endif %}
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form_group">
+                <label for="nome">Nome:</label>
+                <input class= 'form-control' type="text" name="nome" value="{{ estado.nome }}" required>
+            </div>
+
+            <div class="form_group">
+                <label for="sigla">Sigla:</label>
+                <input class='form-control' type="text" name="sigla" value="{{ estado.sigla }}" required>
+            </div>
+
+            <div class="form_group">
+                <label for="regiao">Região:</label>
+                <select class='form-control' name="regiao">
+                    <option value="N" {% if estado.regiao == 'N' %} select {% endif %}>Norte</option>
+                    <option value="NE" {% if estado.regiao == 'NE' %} select {% endif %}>Nordeste</option>
+                    <option value="CO" {% if estado.regiao == 'CO' %} select {% endif %}>Centro-Oeste</option>
+                    <option value="SE" {% if estado.regiao == 'SE' %} select {% endif %}>Sudeste</option>
+                    <option value="S" {% if estado.regiao == 'S' %} select {% endif %}>Sul</option>
+                </select>
+            </div>
+
+            <div class="p-4"></div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

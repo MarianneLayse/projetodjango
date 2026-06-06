@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Lista de Pontos Turísticos:
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <div class="col-md-12 p-4">
+        <a class="btn btn-success" href="{% url 'criar_ponto' %}">Novo Ponto Turístico</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Municipio</th>
+                    <th>Estado</th>
+                    <th style="width: 25%;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ponto in pontos %}
+                    <tr>
+                        <td>{{ ponto.nome }}</td>
+                        <td>{{ ponto.categoria }}</td>
+                        <td>{{ ponto.municipio.nome }}</td>
+                        <td>{{ ponto.estado.nome }}</td>
+                        <td>
+                        <a type="button" class="btn btn-primary" href="{% url 'detalhes_ponto' ponto.id %}">[+Detalhes]</a>
+                        <a type="button" class="btn btn-secondary" href="{% url 'editar_ponto' ponto.id %}">Editar</a>
+                        <form action="{% url 'excluir_ponto' ponto.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Tem certeza que deseja apagar?')">
+                                    Apagar
+                                </button>
+                            </form>
+
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='2'> Não existem estados cadastrados</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

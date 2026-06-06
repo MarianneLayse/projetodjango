@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Detalhes do Bairro:
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <dl>
+        <div class="col-md-4">
+            <dt>Nome:</dt>
+            <dd>{{ bairro.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Municipio:</dt>
+            <dd>{{ bairro.municipio.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Estado:</dt>
+            <dd>{{ bairro.municipio.estado.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Região:</dt>
+            <dd>{{ bairro.municipio.estado.get_regiao_display}}</dd>
+        </div>
+
+    </dl> 
+</div>
+{% endblock %}

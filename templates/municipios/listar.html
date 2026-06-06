@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Lista de Municipios cadastrados:
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <div class="col-md-12 p-4">
+        <a class="btn btn-success" href="{% url 'cadastrar_municipio' %}">Novo Municipio</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th>Municipio</th>
+                    <th>Estado</th>
+                    <th style="width: 25%;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for municipio in municipios %}
+                    <tr>
+                        <td>{{ municipio.nome }}</td>
+                        <td>{{ municipio.estado.nome }}</td>
+                        <td>
+                        <a type="button" class="btn btn-primary" href="{% url 'detalhes_municipio' municipio.id %}">[+Detalhes]</a>
+                        <a type="button" class="btn btn-secondary" href=>Editar</a>
+                        <a type="button" class="btn btn-danger">Apagar</a>  
+                        </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='2'> Não existem municipios cadastrados</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

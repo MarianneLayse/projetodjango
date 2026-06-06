@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        margin-bottom: 30px;
+        border-radius: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        background: white;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn-detalhes {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #0d6efd;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .btn-detalhes:hover {
+        background: #0b5ed7;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <h1 class="mb-4">Pontos Turísticos</h1>
+
+    <div id="map"></div>
+
+    <div class="cards">
+
+        {% for ponto in pontos %}
+        <div class="card">
+            <div class="card-body">
+
+                <h4>{{ ponto.nome }}</h4>
+
+                {% if ponto.descricao %}
+                    <p>{{ ponto.descricao|truncatechars:120 }}</p>
+                {% endif %}
+
+                <a href="{% url 'detalhes_ponto' ponto.id %}"
+                   class="btn-detalhes">
+                    Ver detalhes
+                </a>
+
+            </div>
+        </div>
+        {% empty %}
+            <div class="alert alert-warning">
+                Nenhum ponto turístico cadastrado.
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    var map = L.map('map').setView([-5.0892, -42.8016], 12);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    var pontos = [
+        {% for ponto in pontos %}
+        {
+            id: "{{ ponto.id }}",
+            nome: "{{ ponto.nome|escapejs }}",
+            lat: {{ ponto.latitude|stringformat:"f"|cut:","|default:"0.0" }},
+            lng: {{ ponto.longitude|stringformat:"f"|cut:","|default:"0.0" }},
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    pontos.forEach(function (ponto) {
+
+        if (ponto.lat && ponto.lng) {
+
+            var marker = L.marker([ponto.lat, ponto.lng]).addTo(map);
+
+            marker.bindPopup(
+                "<b>" + ponto.nome + "</b><br>" +
+                "<a href='/pontos-turisticos/" + ponto.id + "/'>Ver detalhes</a>"
+            );
+
+            marker.on('click', function () {
+                window.location.href = "/detalhes/" + ponto.id + "/";
+            });
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

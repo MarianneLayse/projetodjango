@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    {% if municipio %}
+        Editar Municipio
+    {% else %}
+        Cadastrar Novo Municipio
+    {% endif %}
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form_group">
+                <label for="nome">Nome:</label>
+                <input class= 'form-control' type="text" name="nome" value="{{ municipio.nome }}" required>
+            </div>
+
+            <div class="form_group">
+                <label for="populacao">População:</label>
+                <input class='form-control' type="text" name="sigla" value="{{ municipio.populacao }}" required>
+            </div>
+
+            <div class="form_group">
+                <label for="estado">Estado:</label>
+                <select class='form-control' name="estado">
+                    {% for estado in estados %}
+                        <option value="{{ estado.id }}">{{estado.nome}}</option>
+                    {% endfor %} 
+                </select>
+            </div>
+
+            <div class="p-4"></div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

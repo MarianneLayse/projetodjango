@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Detalhes do Municipio:
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <dl>
+        <div class="col-md-4">
+            <dt>Nome:</dt>
+            <dd>{{ municipio.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Estado:</dt>
+            <dd>{{ municipio.estado.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Região:</dt>
+            <dd>{{ municipio.estado.get_regiao_display }}</dd>
+        </div>
+
+    </dl> 
+</div>
+{% endblock %}

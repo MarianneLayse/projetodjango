@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Detalhes do Estado:
+{% endblock %}
+
+{% block conteudo %}
+<div class="row">
+    <dl>
+        <div class="col-md-4">
+            <dt>Nome:</dt>
+            <dd>{{ estado.nome }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Sigla:</dt>
+            <dd>{{ estado.sigla }}</dd>
+        </div>
+
+        <div class="col-md-4">
+            <dt>Região:</dt>
+            <dd>{{ estado.get_regiao_display }}</dd>
+        </div>
+
+    </dl> 
+</div>
+{% endblock %}

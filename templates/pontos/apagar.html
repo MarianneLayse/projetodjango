@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<h2>Confirmar Exclusão</h2>
+
+<p>Tem certeza que deseja apagar <strong>{{ ponto.nome }}</strong>?</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim, apagar</button>
+</form>
+
+<a href="{% url 'listar_pontos' %}" class="btn btn-secondary">Cancelar</a>
+{% endblock %}
